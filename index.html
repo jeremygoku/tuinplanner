@@ -169,6 +169,7 @@ let gapiInited = false, gisInited = false;
 let driveFileId = localStorage.getItem('tuinDriveFileId') || null;
 
 function gapiLoaded() { gapi.load('client', () => { gapiInited = true; maybeEnableButtons(); }); }
+
 function gisLoaded() {
     tokenClient = google.accounts.oauth2.initTokenClient({
         client_id: CLIENT_ID,
@@ -176,17 +177,46 @@ function gisLoaded() {
         callback: (resp) => {
             if (resp.error) return alert("Fout bij inloggen.");
             
-            gapi.client.setToken(resp);
+            // TRUC: Sla het token op in de browser-sessie inclusief de vervaltijd (1 uur)
+            const expireTime = new Date().getTime() + (resp.expires_in * 1000);
+            sessionStorage.setItem('tuinPlannerToken', JSON.stringify({ token: resp, expires: expireTime }));
             
-            document.getElementById('btn-gdrive').innerText = "☁️ Laden...";
-            document.getElementById('btn-gdrive').style.background = "var(--a)";
-            syncFromCloud();
+            startDriveSessie(resp);
         },
     });
     gisInited = true;
     maybeEnableButtons();
 }
-function maybeEnableButtons() { if (gapiInited && gisInited) document.getElementById('btn-gdrive').style.display = 'inline-block'; }
+
+function maybeEnableButtons() { 
+    if (gapiInited && gisInited) {
+        // Controleer of we nog een geldig token hebben na een page refresh
+        const savedTokenData = sessionStorage.getItem('tuinPlannerToken');
+        if (savedTokenData) {
+            const parsedData = JSON.parse(savedTokenData);
+            if (new Date().getTime() < parsedData.expires) {
+                // Het token is nog geldig! Start de sessie direct, zonder te klikken.
+                startDriveSessie(parsedData.token);
+                return; 
+            } else {
+                // Token is ouder dan 1 uur en dus verlopen, ruim het op.
+                sessionStorage.removeItem('tuinPlannerToken'); 
+            }
+        }
+        
+        // Geen geldig token? Toon dan gewoon de login knop
+        document.getElementById('btn-gdrive').style.display = 'inline-block'; 
+    } 
+}
+
+function startDriveSessie(resp) {
+    gapi.client.setToken(resp);
+    document.getElementById('btn-gdrive').innerText = "☁️ Laden...";
+    document.getElementById('btn-gdrive').style.background = "var(--a)";
+    document.getElementById('btn-gdrive').style.display = 'inline-block';
+    syncFromCloud();
+}
+
 function handleAuthClick() {
     tokenClient.requestAccessToken();
 }
