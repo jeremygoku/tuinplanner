@@ -190,7 +190,6 @@ function maybeEnableButtons() { if (gapiInited && gisInited) document.getElement
 function handleAuthClick() {
     tokenClient.requestAccessToken(); // Dit voorkomt de irritante constante pop-ups
 }
-}
 
 async function syncToCloud() {
     if (!gapi.client.getToken()) return;
