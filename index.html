@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>Mijn Ultieme Tuin Planner</title>
 <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
 <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
@@ -90,31 +90,29 @@ details.menu-sectie>summary h2{margin:0;font-size:16px;color:var(--p);display:in
 .log-dropzone{padding:8px;border:2px dashed transparent;border-radius:6px;transition:.2s;margin-top:8px}.log-dropzone.dragover{border-color:var(--a);background:#eaf6ea}
 .tuin-dragover{outline:3px dashed var(--a)!important;outline-offset:-3px}
 .touch-drag-avatar{position:fixed;pointer-events:none;z-index:10001;transform:translate(-50%,-50%);opacity:.8;font-size:24px;background:rgba(255,255,255,.9);padding:8px;border-radius:50%;box-shadow:0 4px 10px rgba(0,0,0,.3);display:none}
+
+/* MOBIELE VERSIE - APP DESIGN */
 @media(max-width:900px){
-    /* 1. App structuur */
     body, #werkruimte { overflow: hidden; height: 100vh; display: flex; flex-direction: column; margin: 0; }
     
-    /* 2. Topbalk: Minimalistisch (Titel en Laag-filters verborgen) */
     #top-balk { padding: 5px 10px; height: 50px; box-sizing: border-box; display: flex; align-items: center; overflow-x: auto; overflow-y: hidden; white-space: nowrap; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 1000; }
     #top-balk::-webkit-scrollbar { display: none; }
-    #top-balk h1, #laag-filters { display: none !important; } /* Titel en filters weg */
+    #top-balk h1, #laag-filters { display: none !important; }
     
     .controls { display: flex; gap: 8px; flex-wrap: nowrap; align-items: center; width: 100%; }
     .btn { padding: 6px 12px; font-size: 12px; border-radius: 20px; } 
     .filter-groep select { padding: 5px 10px; font-size: 12px; border-radius: 15px; }
     #btn-toggle-ui { display: none; }
 
-    /* Bloeikalender als 1 compact icoon */
     #btn-bloeikalender { font-size: 0 !important; padding: 6px 10px; }
     #btn-bloeikalender::after { content: '🌸'; font-size: 16px; display: block; }
 
-    /* 3. Zwevende "Plus" knop: Links, kleiner & transparant */
     #btn-add {
         position: fixed;
         bottom: 25px;
-        left: 20px; /* Nu aan de linkerkant */
+        left: 20px; 
         right: auto;
-        width: 50px; /* Kleiner gemaakt */
+        width: 50px; 
         height: 50px;
         border-radius: 50%;
         padding: 0;
@@ -126,46 +124,43 @@ details.menu-sectie>summary h2{margin:0;font-size:16px;color:var(--p);display:in
         align-items: center;
         justify-content: center;
         border: 2px solid #fff;
-        opacity: 0.85; /* 85% zichtbaar (transparant) */
+        opacity: 0.85;
         transition: transform 0.2s, opacity 0.2s;
     }
     #btn-add::after { content: '➕'; font-size: 22px; display: block; margin-top: 2px; }
-    #btn-add:active { transform: scale(0.9); opacity: 1; } /* Wordt 100% zichtbaar bij aanraken */
+    #btn-add:active { transform: scale(0.9); opacity: 1; }
 
-    /* 4. Plattegrond absolute focus */
     #plattegrond-sectie { order: -1; flex: 1; padding: 0; overflow: auto; background: #e2e8f0; }
     #tuin-container { border: none; border-radius: 0; display: inline-block; min-width: 100%; box-shadow: none; }
     .plant-marker { transform: translate(-50%, -50%) scale(0.55) !important; }
 
     #kompas-container { top: 15px !important; left: 15px !important; transform: scale(0.40); transform-origin: top left; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border-radius: 50%; }
 
-    /* 5. Zijbalken onderaan */
     #zijbalk-links, #zijbalk-agenda { width: 100%; border: none; border-top: 1px solid #ccc; flex: none; max-height: 40vh; overflow-y: auto; background: #fff; z-index: 100; }
     .catalogus-items { grid-template-columns: repeat(4, 1fr); gap: 5px; padding: 10px; }
     .catalogus-item { padding: 8px 4px; font-size: 10px; border-radius: 12px; border-width: 2px; }
     .catalogus-item-icon { font-size: 1.6em; }
 
-    /* 6. Popups perfect voor de duim, inclusief 1-lijn checkboxes */
     .modal { width: 92% !important; max-height: 80vh; border-radius: 20px; padding: 18px; top: 45%; }
     .flex-input { flex-direction: column; gap: 8px; }
     .modal-buttons { flex-direction: column; gap: 8px; }
     .modal-buttons .btn { width: 100%; padding: 14px; border-radius: 12px; font-size: 16px; }
     
-    /* Checkboxes (onderhoud) kleiner en forceer ze op 1 horizontale lijn met scroll */
     .matrix-options { flex-wrap: nowrap; overflow-x: auto; gap: 4px; padding-bottom: 4px; }
     .matrix-options label { font-size: 9px; white-space: nowrap; }
     .matrix-month { width: 55px; font-size: 10px; }
     .matrix-options::-webkit-scrollbar { height: 3px; }
     .matrix-options::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 3px; }
 }
-    @media print{body{height:auto;overflow:visible;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}#top-balk,#zijbalk-links,.modal,.tooltip,#kompas-container,.controls,.touch-drag-avatar{display:none!important}#werkruimte{flex-direction:column;height:auto;display:block;overflow:visible}#plattegrond-sectie{padding:0;background:#fff;display:block;width:100%;overflow:visible;break-after:always}#tuin-container{box-shadow:none;border:1px solid #ccc;width:100%;margin:0}#tuin-afbeelding{max-width:100%}#zijbalk-agenda{width:100%;box-shadow:none;border:none;overflow:visible;flex:none;display:block!important}details.menu-sectie>summary,.search-container{display:none}#agenda-lijst{padding:0;overflow:visible}.agenda-item{border-left-width:3px!important;margin-bottom:15px;break-inside:avoid;border:1px solid #eee}.plant-marker{position:absolute!important}}
+
+@media print{body{height:auto;overflow:visible;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}#top-balk,#zijbalk-links,.modal,.tooltip,#kompas-container,.controls,.touch-drag-avatar{display:none!important}#werkruimte{flex-direction:column;height:auto;display:block;overflow:visible}#plattegrond-sectie{padding:0;background:#fff;display:block;width:100%;overflow:visible;break-after:always}#tuin-container{box-shadow:none;border:1px solid #ccc;width:100%;margin:0}#tuin-afbeelding{max-width:100%}#zijbalk-agenda{width:100%;box-shadow:none;border:none;overflow:visible;flex:none;display:block!important}details.menu-sectie>summary,.search-container{display:none}#agenda-lijst{padding:0;overflow:visible}.agenda-item{border-left-width:3px!important;margin-bottom:15px;break-inside:avoid;border:1px solid #eee}.plant-marker{position:absolute!important}}
 </style>
 </head>
 <body>
 <div id="top-balk">
     <h1>🌳 Mijn Tuin Planner</h1>
     <div class="controls">
-        <button class="btn btn-secondary" id="btn-gdrive" style="display:none;" onclick="handleAuthClick()">☁️ Login Drive</button>
+        <button class="btn btn-secondary" id="btn-gdrive" style="display:none;" onclick="handleAuthClick()">☁️</button>
         <div id="laag-filters">
             <label><input type="checkbox" value="Boom" checked>🌳</label><label><input type="checkbox" value="Struik" checked>🌿</label>
             <label><input type="checkbox" value="Bloem" checked>🌹</label><label><input type="checkbox" value="Kruid" checked>🌱</label>
@@ -244,7 +239,6 @@ function gisLoaded() {
         callback: (resp) => {
             if (resp.error) return alert("Fout bij inloggen.");
             
-            // TRUC: Sla het token op in de browser-sessie inclusief de vervaltijd (1 uur)
             const expireTime = new Date().getTime() + (resp.expires_in * 1000);
             sessionStorage.setItem('tuinPlannerToken', JSON.stringify({ token: resp, expires: expireTime }));
             
@@ -257,21 +251,16 @@ function gisLoaded() {
 
 function maybeEnableButtons() { 
     if (gapiInited && gisInited) {
-        // Controleer of we nog een geldig token hebben na een page refresh
         const savedTokenData = sessionStorage.getItem('tuinPlannerToken');
         if (savedTokenData) {
             const parsedData = JSON.parse(savedTokenData);
             if (new Date().getTime() < parsedData.expires) {
-                // Het token is nog geldig! Start de sessie direct, zonder te klikken.
                 startDriveSessie(parsedData.token);
                 return; 
             } else {
-                // Token is ouder dan 1 uur en dus verlopen, ruim het op.
                 sessionStorage.removeItem('tuinPlannerToken'); 
             }
         }
-        
-        // Geen geldig token? Toon dan gewoon de login knop
         document.getElementById('btn-gdrive').style.display = 'inline-block'; 
     } 
 }
@@ -285,7 +274,7 @@ function startDriveSessie(resp) {
 }
 
 function handleAuthClick() {
-    tokenClient.requestAccessToken();
+    tokenClient.requestAccessToken({prompt: 'consent'});
 }
 
 async function syncToCloud() {
@@ -295,7 +284,6 @@ async function syncToCloud() {
     
     let query = encodeURIComponent("name='tuinplanner_backup.json' and trashed=false");
     
-    // FIX: Controleer of het geheugen niet per ongeluk 'undefined' of 'null' als tekst heeft bewaard!
     if (driveFileId === 'undefined' || driveFileId === 'null') {
         driveFileId = null;
     }
@@ -305,35 +293,25 @@ async function syncToCloud() {
             let s = await fetch("https://www.googleapis.com/drive/v3/files?q=" + query, { headers: { 'Authorization': 'Bearer ' + tk } }).then(r => r.json());
             if (s.files && s.files.length > 0) driveFileId = s.files[0].id;
         }
-        
         if (driveFileId) {
             await fetch("https://www.googleapis.com/upload/drive/v3/files/" + driveFileId + "?uploadType=media", { method: 'PATCH', headers: { 'Authorization': 'Bearer ' + tk, 'Content-Type': 'application/json' }, body: bD });
         } else {
             let m = await fetch("https://www.googleapis.com/drive/v3/files", { method: 'POST', headers: { 'Authorization': 'Bearer ' + tk, 'Content-Type': 'application/json' }, body: JSON.stringify({ name: 'tuinplanner_backup.json' }) }).then(r => r.json());
-            driveFileId = m.id; 
-            localStorage.setItem('tuinDriveFileId', driveFileId);
+            driveFileId = m.id; localStorage.setItem('tuinDriveFileId', driveFileId);
             await fetch("https://www.googleapis.com/upload/drive/v3/files/" + driveFileId + "?uploadType=media", { method: 'PATCH', headers: { 'Authorization': 'Bearer ' + tk, 'Content-Type': 'application/json' }, body: bD });
         }
-    } catch(e) { 
-        console.error("Cloud Save Error:", e); 
-    }
+    } catch(e) { console.error("Cloud Save Error:", e); }
 }
+
 async function syncFromCloud() {
     try {
         let tk = gapi.client.getToken().access_token;
         let query = encodeURIComponent("name='tuinplanner_backup.json' and trashed=false");
         
-        console.log("Zoeken naar backup op Google Drive...");
-        let response = await fetch("https://www.googleapis.com/drive/v3/files?q=" + query, { headers: { 'Authorization': 'Bearer ' + tk } });
-        let s = await response.json();
+        let s = await fetch("https://www.googleapis.com/drive/v3/files?q=" + query, { headers: { 'Authorization': 'Bearer ' + tk } }).then(r => r.json());
         
-        console.log("Google Drive antwoord:", s); // <--- HIER ZIEN WE WAT ER MIS IS
-
         if (s.files && s.files.length > 0) {
-            console.log("Bestand gevonden met ID:", s.files[0].id);
-            driveFileId = s.files[0].id; 
-            localStorage.setItem('tuinDriveFileId', driveFileId);
-            
+            driveFileId = s.files[0].id; localStorage.setItem('tuinDriveFileId', driveFileId);
             let d = await fetch("https://www.googleapis.com/drive/v3/files/" + driveFileId + "?alt=media", { headers: { 'Authorization': 'Bearer ' + tk } }).then(r => r.json());
             
             if (d.plants) {
@@ -341,14 +319,15 @@ async function syncFromCloud() {
                 if (d.bg) { localStorage.setItem('tuinAchtergrondData', d.bg); D.tA.src = d.bg; }
                 localStorage.setItem(KEY, JSON.stringify(plts));
                 ren(); 
-                alert("✅ Tuin succesvol ingeladen!");
             }
         } else {
-            console.log("Geen bestanden gevonden met die naam.");
-            alert("Geen cloud-backup gevonden.");
+            if (plts && plts.length > 0) {
+                syncToCloud();
+            }
         }
+        document.getElementById('btn-gdrive').innerText = "☁️";
     } catch(e) {
-        console.error("Fout bij ophalen:", e);
+        document.getElementById('btn-gdrive').innerText = "❌";
     }
 }
 // ===================================
@@ -361,7 +340,7 @@ plts.forEach(p=>{if(p.x&&p.y&&!p.posities){p.posities=[{x:p.x,y:p.y}];delete p.x
 const undo=[];const MAX_U=25;let eId=null,slep=!1,selIds=new Set(),dStart=null,dStartP=new Map(),aTItem=null,tLog=[],tImg=null;
 const D={c:document.getElementById('tuin-container'),tt:document.getElementById('tooltip'),m:document.getElementById('plant-modal'),aL:document.getElementById('agenda-lijst'),fM:document.getElementById('filter-maand'),aS:document.getElementById('agenda-search'),mC:document.getElementById('matrix-container'),tA:document.getElementById('tuin-afbeelding'),pV:document.getElementById('p-vorm'),hC:document.getElementById('hoogte-container'),lB:document.getElementById('label-breedte'),kS:document.getElementById('kompas-slider'),kW:document.getElementById('kompas-waarde'),wL:document.getElementById('weer-lijst'),wW:document.getElementById('weer-waarschuwingen'),hL:document.getElementById('p-history-list'),nLI:document.getElementById('p-new-log'),hS:document.getElementById('p-history-section'),tAv:document.getElementById('touch-drag-avatar'),iPC:document.getElementById('p-log-img-preview-container'),iPS:document.getElementById('p-log-img-preview-src'),lD:document.getElementById('p-log-dropzone'),pE:document.getElementById('p-evergreen'),pF:document.getElementById('p-frost'),zL:document.getElementById('zijbalk-links'),zA:document.getElementById('zijbalk-agenda'),bUI:document.getElementById('btn-toggle-ui')};
 
-let cST; // Timeout for Debounced Cloud Save
+let cST; 
 const sav=()=>{
     localStorage.setItem(KEY,JSON.stringify(plts));
     clearTimeout(cST);
@@ -370,7 +349,7 @@ const sav=()=>{
             document.getElementById('btn-gdrive').innerText="💾";
             syncToCloud().then(()=>{
                 document.getElementById('btn-gdrive').innerText="✅";
-                setTimeout(()=>document.getElementById('btn-gdrive').innerText = "☁️";2000);
+                setTimeout(()=>document.getElementById('btn-gdrive').innerText="☁️",2000);
             });
         }
     }, 1500);
@@ -437,8 +416,8 @@ async function tT(p,cI,wL){let sH=mnden.filter(m=>p.schema?.[m]?.length).map(m=>
 D.tt.innerHTML=`<strong>${cI} ${p.name}${p.count>1?` <small>(${p.count}x)</small>`:''}</strong><small><b>Type:</b> ${p.type}</small><br>${sH}${wH}`;D.tt.style.display='block';document.getElementById(`agenda-${p.id}`)?.classList.add('active-hover');
 let d=await fW(p.name);if(d){D.tt.innerHTML=`<strong>${cI} ${p.name}${p.count>1?` <small>(${p.count}x)</small>`:''}</strong><small><b>Type:</b> ${p.type}</small><br>${sH}<div style="margin-top:8px;padding-top:8px;border-top:1px solid #e2e8f0;font-size:12px;line-height:1.4">${d.thumbnail?`<img src="${d.thumbnail.source}" style="float:right;width:65px;border-radius:4px">`:''}<b>Wiki:</b><br>${d.extract}</div><p style="margin:8px 0 0;font-size:11px;color:#777"><b>Notities:</b> ${p.info||'Geen'}</p>`;let aL=document.getElementById(`wiki-link-${p.id}`);if(aL&&!aL.innerHTML)aL.innerHTML=`<a href="${d.content_urls.desktop.page}" target="_blank" style="color:var(--p);font-size:12px;font-weight:bold;text-decoration:underline">📖 Wiki →</a>`}}
 function fil(){let q=D.aS.value.toLowerCase().trim();document.querySelectorAll('.agenda-item').forEach(i=>{let m=i.dataset.sN.includes(q)||i.dataset.sT.includes(q)||i.dataset.sI.includes(q);i.style.display=m?'block':'none';document.querySelectorAll(`.plant-marker[data-id="${i.id.split('-')[1]}"]`).forEach(mk=>mk.classList.toggle('search-hidden',!m))})}
-document.getElementById('btn-add').onclick=()=>{eId=null;wTL();document.getElementById('modal-title').innerText="Nieuw";['p-name','p-info'].forEach(id=>document.getElementById(id).value='');document.getElementById('p-type').value='Struik';document.getElementById('p-custom-icon').value='standaard';D.pV.value='cirkel';document.getElementById('p-color').value='#40c057';['p-size','p-height'].forEach(id=>document.getElementById(id).value='40');document.getElementById('p-count').value='1';D.pE.checked=!0;D.pF.checked=!1;D.hS.style.display='none';document.querySelectorAll('.matrix-check').forEach(c=>c.checked=!1);document.getElementById('btn-delete').style.display='none';D.pV.dispatchEvent(new Event('change'));D.m.style.display='block'; D.m.scrollTop=0;};
-function oB(p){if(!p)return;eId=p.id;wTL();document.getElementById('modal-title').innerText="Wijzigen";document.getElementById('p-name').value=p.name;document.getElementById('p-type').value=p.type;document.getElementById('p-custom-icon').value=p.customIcon||'standaard';D.pV.value=p.vorm||'cirkel';document.getElementById('p-color').value=p.color;document.getElementById('p-size').value=p.size;document.getElementById('p-height').value=p.height||p.size;document.getElementById('p-count').value=p.count||1;document.getElementById('p-info').value=p.info;D.pE.checked=p.groenblijvend??!0;D.pF.checked=p.vorstGevoelig||!1;D.hS.style.display='block';tLog=p.history?[...p.history]:[];rL();document.querySelectorAll('.matrix-check').forEach(c=>c.checked=p.schema?.[c.dataset.month]?.includes(c.value)||!1);document.getElementById('btn-delete').style.display='block';D.pV.dispatchEvent(new Event('change'));D.m.style.display='block'; D.m.scrollTop=0;}
+document.getElementById('btn-add').onclick=()=>{eId=null;wTL();document.getElementById('modal-title').innerText="Nieuw";['p-name','p-info'].forEach(id=>document.getElementById(id).value='');document.getElementById('p-type').value='Struik';document.getElementById('p-custom-icon').value='standaard';D.pV.value='cirkel';document.getElementById('p-color').value='#40c057';['p-size','p-height'].forEach(id=>document.getElementById(id).value='40');document.getElementById('p-count').value='1';D.pE.checked=!0;D.pF.checked=!1;D.hS.style.display='none';document.querySelectorAll('.matrix-check').forEach(c=>c.checked=!1);document.getElementById('btn-delete').style.display='none';D.pV.dispatchEvent(new Event('change'));D.m.style.display='block';D.m.scrollTop=0;};
+function oB(p){if(!p)return;eId=p.id;wTL();document.getElementById('modal-title').innerText="Wijzigen";document.getElementById('p-name').value=p.name;document.getElementById('p-type').value=p.type;document.getElementById('p-custom-icon').value=p.customIcon||'standaard';D.pV.value=p.vorm||'cirkel';document.getElementById('p-color').value=p.color;document.getElementById('p-size').value=p.size;document.getElementById('p-height').value=p.height||p.size;document.getElementById('p-count').value=p.count||1;document.getElementById('p-info').value=p.info;D.pE.checked=p.groenblijvend??!0;D.pF.checked=p.vorstGevoelig||!1;D.hS.style.display='block';tLog=p.history?[...p.history]:[];rL();document.querySelectorAll('.matrix-check').forEach(c=>c.checked=p.schema?.[c.dataset.month]?.includes(c.value)||!1);document.getElementById('btn-delete').style.display='block';D.pV.dispatchEvent(new Event('change'));D.m.style.display='block';D.m.scrollTop=0;}
 const rL=()=>{D.hL.innerHTML=tLog.length?tLog.map(i=>`<div class="history-item"><span class="history-date">[${i.date}]</span> ${i.text||''}${i.img?`<img src="${i.img}" class="history-img">`:''}</div>`).join(''):'<i>Geen logboek.</i>'};
 const vLF=f=>{let r=new FileReader();r.onload=ev=>{let i=new Image();i.onload=()=>{let c=document.createElement('canvas'),s=Math.min(800/i.width,1);c.width=i.width*s;c.height=i.height*s;c.getContext('2d').drawImage(i,0,0,c.width,c.height);tImg=c.toDataURL('image/jpeg',.7);D.iPS.src=tImg;D.iPC.style.display='inline-block'};i.src=ev.target.result};r.readAsDataURL(f)};
 document.getElementById('btn-add-log-img').onclick=e=>{e.preventDefault();document.getElementById('p-new-log-file').click()};document.getElementById('p-new-log-file').onchange=e=>{if(e.target.files[0])vLF(e.target.files[0])};
@@ -497,12 +476,12 @@ async function lW(){
 document.addEventListener('keydown',e=>{let inI=['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName);if(e.key==='Escape'){D.m.style.display='none';document.getElementById('bloei-modal').style.display='none'}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!inI){e.preventDefault();vU()}if(!inI&&selIds.size>0){let mX=0,mY=0,md=!1;if(e.key==='ArrowUp'){mY=-.5;md=!0}else if(e.key==='ArrowDown'){mY=.5;md=!0}else if(e.key==='ArrowLeft'){mX=-.5;md=!0}else if(e.key==='ArrowRight'){mX=.5;md=!0}if(md){e.preventDefault();sU();selIds.forEach(k=>{let[id,idx]=k.split('-').map(Number),p=plts.find(x=>x.id===id);if(p?.posities?.[idx]){p.posities[idx].x=`${Math.max(0,Math.min(100,parseFloat(p.posities[idx].x)+mX))}%`;p.posities[idx].y=`${Math.max(0,Math.min(100,parseFloat(p.posities[idx].y)+mY))}%`}});sav();ren()}if(e.key==='Enter'||e.key.toLowerCase()==='e'){e.preventDefault();oB(plts.find(p=>p.id===+Array.from(selIds)[0].split('-')[0]))}if(['Delete','Backspace'].includes(e.key)){e.preventDefault();if(confirm(`Verwijder ${selIds.size} marker(s)?`)){sU();let mDel=[...selIds].map(k=>{let[id,idx]=k.split('-').map(Number);return{id,idx}}).sort((a,b)=>b.idx-a.idx);mDel.forEach(({id,idx})=>{let p=plts.find(x=>x.id===id);if(p){p.posities.splice(idx,1);p.count=p.posities.length}});plts=plts.filter(p=>p.posities.length>0);selIds.clear();sav();ren();D.tt.style.display='none'}}}});
 document.addEventListener('mousemove',vB);document.addEventListener('touchmove',vB,{passive:!1});
 document.addEventListener('mouseup',vL);document.addEventListener('touchend',vL);
-// Sluit het weerbericht en de agenda standaard op telefoonschermen
+
 if (window.innerWidth <= 900) {
     document.querySelectorAll('details.menu-sectie').forEach((el, index) => {
-        // Index 0 = Catalogus (blijft open). Index 1 en 2 (Weer & Agenda) gaan dicht.
         if(index !== 0) el.removeAttribute('open');
     });
 }
+
 ren();lW();
 </script></body></html>
