@@ -105,6 +105,7 @@ async function syncFromCloud() {
     }
 }
 // ===================================
+
 const KEY='tuinMatrixPlannerData',mnden=["Januari","Februari","Maart","April","Mei","Juni","Juli","Augustus","September","Oktober","November","December"];
 const tO=[{id:"bloei",l:"🌸 Bloei",n:"Bloei"},{id:"snoei",l:"✂️ Snoei",n:"Snoei"},{id:"bemest",l:"🧪 Bemest",n:"Bemest"},{id:"water",l:"💧 Water",n:"Water"},{id:"mulch",l:"🪵 Mulch",n:"Mulch"},{id:"winter",l:"🛡️ Winter",n:"Winterklaar"},{id:"wied",l:"🌿 Wied",n:"Wieden"}];
 const catDet={Boom:{i:"🌳"},Struik:{i:"🌿"},Bloem:{i:"🌹"},Kruid:{i:"🌱"}};
