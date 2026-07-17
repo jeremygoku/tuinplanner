@@ -6,7 +6,9 @@
     <title>Mijn Ultieme Tuin Planner</title>
     <!-- Link naar je externe CSS bestand -->
     <link rel="stylesheet" href="style.css">
-    
+    <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#40c057">
+  <link rel="apple-touch-icon" href="./icon-192.png">
     <!-- Google API scripts -->
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
     <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
@@ -113,5 +115,14 @@
 
 <!-- Link naar je externe JavaScript bestand -->
 <script src="script.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('Service Worker geregistreerd!', reg))
+          .catch(err => console.error('Service Worker registratie mislukt:', err));
+      });
+    }
+  </script>
 </body>
 </html>
