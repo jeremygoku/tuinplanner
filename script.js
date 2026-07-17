@@ -161,23 +161,59 @@ if(document.getElementById('btn-bg-camera')) {
     document.getElementById('btn-bg-camera').onclick = () => document.getElementById('bg-camera-input').click();
 }
 
+// --- GEÜPDATETE LOGICA VOOR FOTO & CAMERA MET COMPRESSIE ---
+document.getElementById('btn-bg-upload').onclick = () => document.getElementById('bg-file-input').click();
+if(document.getElementById('btn-bg-camera')) {
+    document.getElementById('btn-bg-camera').onclick = () => document.getElementById('bg-camera-input').click();
+}
+
 const handleBgUpload = e => {
     let f = e.target.files[0];
     if (f) {
         let r = new FileReader();
         r.onload = ev => {
-            D.tA.src = ev.target.result;
-            try { 
-                localStorage.setItem('tuinAchtergrondData', ev.target.result); 
-                sav(); 
-            } catch { 
-                alert("⚠️ Deze foto is te groot voor het geheugen van de browser. Probeer een kleinere foto te maken of snij hem bij."); 
-            }
+            let img = new Image();
+            img.onload = () => {
+                let canvas = document.createElement('canvas');
+                let ctx = canvas.getContext('2d');
+                
+                // Beperk de maximale afmetingen tot 1200px voor soepele prestaties
+                let maxW = 1200, maxH = 1200;
+                let width = img.width, height = img.height;
+                
+                if (width > height) {
+                    if (width > maxW) { height *= maxW / width; width = maxW; }
+                } else {
+                    if (height > maxH) { width *= maxH / height; height = maxH; }
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Comprimeer naar JPEG met 70% kwaliteit
+                let compressedData = canvas.toDataURL('image/jpeg', 0.7);
+                
+                D.tA.src = compressedData;
+                try { 
+                    localStorage.setItem('tuinAchtergrondData', compressedData); 
+                    sav(); 
+                } catch (err) { 
+                    alert("⚠️ Oeps! Zelfs na compressie is de foto te groot voor het lokale geheugen."); 
+                }
+            };
+            img.src = ev.target.result;
         };
         r.readAsDataURL(f);
     }
     e.target.value = ''; 
 };
+
+document.getElementById('bg-file-input').onchange = handleBgUpload;
+if(document.getElementById('bg-camera-input')) {
+    document.getElementById('bg-camera-input').onchange = handleBgUpload;
+}
+// -------------------------------------------------------------
 
 document.getElementById('bg-file-input').onchange = handleBgUpload;
 if(document.getElementById('bg-camera-input')) {
