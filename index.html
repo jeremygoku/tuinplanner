@@ -278,7 +278,7 @@ function maybeEnableButtons() {
 
 function startDriveSessie(resp) {
     gapi.client.setToken(resp);
-    document.getElementById('btn-gdrive').innerText = "☁️ Laden...";
+    document.getElementById('btn-gdrive').innerText = "⏳";
     document.getElementById('btn-gdrive').style.background = "var(--a)";
     document.getElementById('btn-gdrive').style.display = 'inline-block';
     syncFromCloud();
