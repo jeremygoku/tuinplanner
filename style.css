@@ -85,7 +85,7 @@ details.menu-sectie>summary h2{margin:0;font-size:16px;color:var(--p);display:in
 /* MOBIELE VERSIE - APP DESIGN */
 @media(max-width:900px){
     body { overflow: hidden; height: 100dvh; display: flex; flex-direction: column; margin: 0; }
-#werkruimte { overflow: hidden; flex: 1; display: flex; flex-direction: column; margin: 0; }
+    #werkruimte { overflow: hidden; flex: 1; display: flex; flex-direction: column; margin: 0; }
     
     #top-balk { padding: 5px 10px; height: 50px; box-sizing: border-box; display: flex; align-items: center; overflow-x: auto; overflow-y: hidden; white-space: nowrap; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 1000; }
     #top-balk::-webkit-scrollbar { display: none; }
