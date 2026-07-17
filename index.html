@@ -102,7 +102,9 @@ details.menu-sectie>summary h2{margin:0;font-size:16px;color:var(--p);display:in
     .controls { display: flex; gap: 8px; flex-wrap: nowrap; align-items: center; width: 100%; }
     .btn { padding: 6px 12px; font-size: 12px; border-radius: 20px; } 
     .filter-groep select { padding: 5px 10px; font-size: 12px; border-radius: 15px; }
-    #btn-toggle-ui { display: none; }
+    
+    /* Verberg onnodige desktop knoppen op mobiel */
+    #btn-toggle-ui, #btn-print, #btn-export, #btn-import { display: none !important; }
 
     #btn-bloeikalender { font-size: 0 !important; padding: 6px 10px; }
     #btn-bloeikalender::after { content: '🌸'; font-size: 16px; display: block; }
@@ -150,13 +152,10 @@ details.menu-sectie>summary h2{margin:0;font-size:16px;color:var(--p);display:in
         flex-direction: column; padding-bottom: 20px; 
     }
     
-    /* Deze class wordt door JavaScript toegevoegd als je op een icoontje tikt */
     #zijbalk-links.open-panel, #zijbalk-agenda.open-panel { display: flex !important; }
     
-    /* Catalogus 100% verbergen op mobiel */
     #zijbalk-links details:first-child { display: none !important; }
     
-    /* Zorg dat Weer en Agenda menu's niet inklappen als de bottom sheet open is */
     #zijbalk-links details, #zijbalk-agenda details { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
     details.menu-sectie > summary { pointer-events: none; }
     details.menu-sectie > summary::after { display: none; }
@@ -181,7 +180,15 @@ details.menu-sectie>summary h2{margin:0;font-size:16px;color:var(--p);display:in
     <h1>🌳 Mijn Tuin Planner</h1>
     <div class="controls">
         <button class="btn btn-secondary" id="btn-gdrive" style="display:none;" onclick="handleAuthClick()">☁️</button>
-        <!-- Twee nieuwe knoppen voor mobiel -->
+        
+        <!-- De mobiele Camera en Upload knoppen staan nu direct vooraan! -->
+        <button class="btn btn-secondary" id="btn-bg-camera" style="background:#2b6cb0" title="Maak foto met camera">📷</button>
+        <input type="file" id="bg-camera-input" accept="image/*" capture="environment" style="display:none">
+        
+        <button class="btn btn-secondary" id="btn-bg-upload" title="Kies foto uit galerij">🖼️</button>
+        <input type="file" id="bg-file-input" accept="image/*" style="display:none">
+
+        <!-- Knoppen voor mobiele Bottom Sheets -->
         <button class="btn btn-secondary" id="btn-weer-mobile" style="display:none;"></button>
         <button class="btn btn-secondary" id="btn-agenda-mobile" style="display:none;"></button>
         
@@ -194,8 +201,9 @@ details.menu-sectie>summary h2{margin:0;font-size:16px;color:var(--p);display:in
         </div>
         <button class="btn" id="btn-add">➕ Element</button><button class="btn" id="btn-bloeikalender" style="background:#d6336c">🌸 Kalender</button>
         <button class="btn btn-secondary" id="btn-toggle-ui" style="background:var(--gd)">↔️ Focus</button>
-        <button class="btn btn-secondary" id="btn-bg-upload">🖼️</button><input type="file" id="bg-file-input" accept="image/*" style="display:none">
-        <button class="btn btn-secondary" onclick="window.print()">🖨️</button><button class="btn btn-secondary" id="btn-export">📤</button>
+        
+        <button class="btn btn-secondary" id="btn-print" onclick="window.print()">🖨️</button>
+        <button class="btn btn-secondary" id="btn-export">📤</button>
         <button class="btn btn-secondary" id="btn-import">📥</button><input type="file" id="import-file" accept=".json" style="display:none">
         <button class="btn btn-secondary" id="btn-undo">↩️</button><button class="btn btn-danger" id="btn-clear">🧹</button>
     </div>
@@ -404,8 +412,37 @@ mnden.forEach(m=>r+=`<div style="height:18px;border-radius:3px;background:${p.sc
 document.getElementById('bloei-content').innerHTML=plts.length?h:"<p><i>Voeg planten toe.</i></p>";document.getElementById('bloei-modal').style.display='block'};
 document.getElementById('btn-sluit-bloei').onclick=()=>document.getElementById('bloei-modal').style.display='none';
 D.pV.onchange=function(){let r=this.value==='rechthoek';D.hC.style.display=r?'block':'none';D.lB.innerText=r?"Breedte (px)":"Grootte (px)"};
-document.getElementById('btn-bg-upload').onclick=()=>document.getElementById('bg-file-input').click();
-document.getElementById('bg-file-input').onchange=e=>{let f=e.target.files[0];if(f){let r=new FileReader();r.onload=ev=>{D.tA.src=ev.target.result;try{localStorage.setItem('tuinAchtergrondData',ev.target.result);sav();}catch{alert("Afbeelding te groot voor opslag.")}};r.readAsDataURL(f)}};
+
+// --- NIEUWE LOGICA VOOR FOTO & CAMERA ---
+document.getElementById('btn-bg-upload').onclick = () => document.getElementById('bg-file-input').click();
+if(document.getElementById('btn-bg-camera')) {
+    document.getElementById('btn-bg-camera').onclick = () => document.getElementById('bg-camera-input').click();
+}
+
+const handleBgUpload = e => {
+    let f = e.target.files[0];
+    if (f) {
+        let r = new FileReader();
+        r.onload = ev => {
+            D.tA.src = ev.target.result;
+            try { 
+                localStorage.setItem('tuinAchtergrondData', ev.target.result); 
+                sav(); 
+            } catch { 
+                alert("⚠️ Deze foto is te groot voor het geheugen van de browser. Probeer een kleinere foto te maken of snij hem bij."); 
+            }
+        };
+        r.readAsDataURL(f);
+    }
+    e.target.value = ''; // Reset, zodat je vaker achter elkaar een foto kan maken
+};
+
+document.getElementById('bg-file-input').onchange = handleBgUpload;
+if(document.getElementById('bg-camera-input')) {
+    document.getElementById('bg-camera-input').onchange = handleBgUpload;
+}
+// -----------------------------------------
+
 D.c.addEventListener('mousedown',sD);D.c.addEventListener('touchstart',sD,{passive:!0});
 D.c.addEventListener('mouseenter',e=>{let m=e.target.closest('.plant-marker');if(m&&!slep){let p=plts.find(p=>p.id===+m.dataset.id);if(p)tT(p,(p.customIcon&&p.customIcon!=='standaard')?p.customIcon:(catDet[p.type]?.i||"🌱"),gW(p.name))}},{capture:!0});
 D.c.addEventListener('mousemove',e=>{if(e.target.closest('.plant-marker')&&!slep){let x=e.clientX+15,y=e.clientY+15;if(x+D.tt.offsetWidth+20>window.innerWidth)x=e.clientX-D.tt.offsetWidth-15;if(y+D.tt.offsetHeight+20>window.innerHeight)y=e.clientY-D.tt.offsetHeight-15;Object.assign(D.tt.style,{left:`${x}px`,top:`${y}px`})}},{capture:!0});
@@ -511,7 +548,6 @@ document.getElementById('btn-weer-mobile').onclick = () => {
     document.getElementById('zijbalk-agenda').classList.remove('open-panel');
 };
 
-// Sluit open panelen als je de plattegrond aanraakt!
 document.getElementById('plattegrond-sectie').addEventListener('touchstart', () => {
     document.getElementById('zijbalk-agenda').classList.remove('open-panel');
     document.getElementById('zijbalk-links').classList.remove('open-panel');
