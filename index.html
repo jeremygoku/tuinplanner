@@ -91,31 +91,63 @@ details.menu-sectie>summary h2{margin:0;font-size:16px;color:var(--p);display:in
 .tuin-dragover{outline:3px dashed var(--a)!important;outline-offset:-3px}
 .touch-drag-avatar{position:fixed;pointer-events:none;z-index:10001;transform:translate(-50%,-50%);opacity:.8;font-size:24px;background:rgba(255,255,255,.9);padding:8px;border-radius:50%;box-shadow:0 4px 10px rgba(0,0,0,.3);display:none}
 @media(max-width:900px){
-    /* Laat de app op mobiel als een gewone website scrollen */
-    body { height: auto; overflow: visible; }
-    #werkruimte { flex-direction: column; height: auto; overflow: visible; }
+    /* 1. App-gevoel: Geen onverwachte scrolls van de hele pagina */
+    body { overflow: hidden; }
+    #werkruimte { 
+        flex-direction: column; 
+        overflow-y: auto; 
+        height: calc(100vh - 55px); 
+        display: flex;
+        padding-bottom: 20px;
+    }
     
-    /* Bovenbalk knoppen netjes onder elkaar uitlijnen */
-    #top-balk { flex-direction: column; padding: 15px; gap: 12px; }
-    #top-balk h1 { text-align: center; font-size: 22px; margin-bottom: 5px; }
-    .controls { justify-content: center; width: 100%; }
+    /* 2. Swipebare topbalk (horizontaal scrollen ipv inpakken) */
+    #top-balk { 
+        padding: 8px 10px; 
+        overflow-x: auto; 
+        white-space: nowrap; 
+        gap: 15px;
+    }
+    #top-balk::-webkit-scrollbar { display: none; } /* Verbergt de scrollbalk voor strak design */
+    #top-balk h1 { font-size: 16px; margin: 0; }
+    .controls, #laag-filters, .filter-groep { flex-wrap: nowrap; gap: 6px; }
+    .btn { padding: 6px 10px; font-size: 12px; }
+
+    /* 3. Plattegrond absolute prioriteit (helemaal bovenaan zetten) */
+    #plattegrond-sectie { 
+        order: -1; /* Dit is de magie: schuift de map helemaal naar boven! */
+        flex: none; 
+        width: 100%; 
+        padding: 10px; 
+        box-sizing: border-box;
+        background: #fff;
+        border-bottom: 2px solid #e2e8f0;
+    }
+    #tuin-container { width: 100%; display: block; margin: 0 auto; }
     
-    /* Zijbalken nemen 100% breedte in */
-    #zijbalk-links, #zijbalk-agenda { width: 100%; border: none; height: auto; flex: none; display: block!important; }
-    #zijbalk-links { border-bottom: 3px solid var(--p); }
-    #zijbalk-agenda { border-top: 3px solid var(--p); }
+    /* 4. Plant-markers 40% kleiner maken voor overzicht */
+    .plant-marker { transform: translate(-50%, -50%) scale(0.6) !important; }
     
-    /* Zorg dat de kaart ALTIJD een flink blok ruimte krijgt en horizontaal scrollbaar is */
-    #plattegrond-sectie { padding: 15px 5px; width: 100%; box-sizing: border-box; min-height: 60vh; overflow-x: auto; overflow-y: hidden; }
-    #tuin-container { min-width: 340px; margin: 0 auto; display: block; }
-    #tuin-afbeelding { width: 100%; }
+    /* 5. Kompas veel kleiner in de hoek */
+    #kompas-container { 
+        transform: scale(0.6); 
+        transform-origin: top left; 
+        top: 5px; 
+        left: 5px; 
+    }
+
+    /* 6. Zijbalken onder de map, compacter maken */
+    #zijbalk-links, #zijbalk-agenda { width: 100%; border: none; display: block !important; }
     
-    /* Kompas netjes in beeld zetten ipv links buiten het scherm */
-    #kompas-container { position: relative; left: auto; top: auto; margin: 0 auto 15px auto; display: block; width: 120px; }
-    
-    /* Zorg dat de invul-popups en kalender op het scherm passen */
-    .modal { width: 95% !important; padding: 15px; max-height: 90vh; }
-    .tooltip { width: 90%; left: 5% !important; top: 10% !important; }
+    /* Snel catalogus 4-op-een-rij ipv 2 */
+    .catalogus-items { grid-template-columns: repeat(4, 1fr); padding: 5px; gap: 5px; }
+    .catalogus-item { font-size: 10px; padding: 4px; }
+    .catalogus-item-icon { font-size: 1.5em; }
+
+    /* 7. Popups passend maken voor smalle schermen */
+    .modal { width: 92% !important; padding: 15px; max-height: 85vh; }
+    .flex-input { flex-direction: column; gap: 5px; }
+    .tooltip { width: 85%; left: 7.5% !important; top: 10% !important; transform: none !important; position: fixed; }
 }
     @media print{body{height:auto;overflow:visible;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}#top-balk,#zijbalk-links,.modal,.tooltip,#kompas-container,.controls,.touch-drag-avatar{display:none!important}#werkruimte{flex-direction:column;height:auto;display:block;overflow:visible}#plattegrond-sectie{padding:0;background:#fff;display:block;width:100%;overflow:visible;break-after:always}#tuin-container{box-shadow:none;border:1px solid #ccc;width:100%;margin:0}#tuin-afbeelding{max-width:100%}#zijbalk-agenda{width:100%;box-shadow:none;border:none;overflow:visible;flex:none;display:block!important}details.menu-sectie>summary,.search-container{display:none}#agenda-lijst{padding:0;overflow:visible}.agenda-item{border-left-width:3px!important;margin-bottom:15px;break-inside:avoid;border:1px solid #eee}.plant-marker{position:absolute!important}}
 </style>
