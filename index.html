@@ -226,22 +226,30 @@ async function syncToCloud() {
     const bD = JSON.stringify({ plants: plts, bg: localStorage.getItem('tuinAchtergrondData') });
     let tk = gapi.client.getToken().access_token;
     
-    // FIX: Maak de zoek-link veilig voor alle browsers (haalt de spatie-fouten eruit)
     let query = encodeURIComponent("name='tuinplanner_backup.json' and trashed=false");
     
+    // FIX: Controleer of het geheugen niet per ongeluk 'undefined' of 'null' als tekst heeft bewaard!
+    if (driveFileId === 'undefined' || driveFileId === 'null') {
+        driveFileId = null;
+    }
+
     try {
         if (!driveFileId) {
             let s = await fetch("https://www.googleapis.com/drive/v3/files?q=" + query, { headers: { 'Authorization': 'Bearer ' + tk } }).then(r => r.json());
             if (s.files && s.files.length > 0) driveFileId = s.files[0].id;
         }
+        
         if (driveFileId) {
             await fetch("https://www.googleapis.com/upload/drive/v3/files/" + driveFileId + "?uploadType=media", { method: 'PATCH', headers: { 'Authorization': 'Bearer ' + tk, 'Content-Type': 'application/json' }, body: bD });
         } else {
             let m = await fetch("https://www.googleapis.com/drive/v3/files", { method: 'POST', headers: { 'Authorization': 'Bearer ' + tk, 'Content-Type': 'application/json' }, body: JSON.stringify({ name: 'tuinplanner_backup.json' }) }).then(r => r.json());
-            driveFileId = m.id; localStorage.setItem('tuinDriveFileId', driveFileId);
+            driveFileId = m.id; 
+            localStorage.setItem('tuinDriveFileId', driveFileId);
             await fetch("https://www.googleapis.com/upload/drive/v3/files/" + driveFileId + "?uploadType=media", { method: 'PATCH', headers: { 'Authorization': 'Bearer ' + tk, 'Content-Type': 'application/json' }, body: bD });
         }
-    } catch(e) { console.error("Cloud Save Error:", e); }
+    } catch(e) { 
+        console.error("Cloud Save Error:", e); 
+    }
 }
 async function syncFromCloud() {
     try {
