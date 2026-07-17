@@ -370,7 +370,7 @@ const sav=()=>{
             document.getElementById('btn-gdrive').innerText="💾";
             syncToCloud().then(()=>{
                 document.getElementById('btn-gdrive').innerText="✅";
-                setTimeout(()=>document.getElementById('btn-gdrive').innerText="☁️";,2000);
+                setTimeout(()=>document.getElementById('btn-gdrive').innerText = "☁️";2000);
             });
         }
     }, 1500);
