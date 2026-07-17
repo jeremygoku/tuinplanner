@@ -90,8 +90,33 @@ details.menu-sectie>summary h2{margin:0;font-size:16px;color:var(--p);display:in
 .log-dropzone{padding:8px;border:2px dashed transparent;border-radius:6px;transition:.2s;margin-top:8px}.log-dropzone.dragover{border-color:var(--a);background:#eaf6ea}
 .tuin-dragover{outline:3px dashed var(--a)!important;outline-offset:-3px}
 .touch-drag-avatar{position:fixed;pointer-events:none;z-index:10001;transform:translate(-50%,-50%);opacity:.8;font-size:24px;background:rgba(255,255,255,.9);padding:8px;border-radius:50%;box-shadow:0 4px 10px rgba(0,0,0,.3);display:none}
-@media(max-width:900px){#werkruimte{flex-direction:column;overflow-y:auto;height:calc(100vh - 60px)}#zijbalk-links,#zijbalk-agenda{width:100%;border:none;border-top:2px solid #e2e8f0;height:auto;flex:none;display:block!important}#plattegrond-sectie{padding:15px;flex:1}#kompas-container{left:10px}}
-@media print{body{height:auto;overflow:visible;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}#top-balk,#zijbalk-links,.modal,.tooltip,#kompas-container,.controls,.touch-drag-avatar{display:none!important}#werkruimte{flex-direction:column;height:auto;display:block;overflow:visible}#plattegrond-sectie{padding:0;background:#fff;display:block;width:100%;overflow:visible;break-after:always}#tuin-container{box-shadow:none;border:1px solid #ccc;width:100%;margin:0}#tuin-afbeelding{max-width:100%}#zijbalk-agenda{width:100%;box-shadow:none;border:none;overflow:visible;flex:none;display:block!important}details.menu-sectie>summary,.search-container{display:none}#agenda-lijst{padding:0;overflow:visible}.agenda-item{border-left-width:3px!important;margin-bottom:15px;break-inside:avoid;border:1px solid #eee}.plant-marker{position:absolute!important}}
+@media(max-width:900px){
+    /* Laat de app op mobiel als een gewone website scrollen */
+    body { height: auto; overflow: visible; }
+    #werkruimte { flex-direction: column; height: auto; overflow: visible; }
+    
+    /* Bovenbalk knoppen netjes onder elkaar uitlijnen */
+    #top-balk { flex-direction: column; padding: 15px; gap: 12px; }
+    #top-balk h1 { text-align: center; font-size: 22px; margin-bottom: 5px; }
+    .controls { justify-content: center; width: 100%; }
+    
+    /* Zijbalken nemen 100% breedte in */
+    #zijbalk-links, #zijbalk-agenda { width: 100%; border: none; height: auto; flex: none; display: block!important; }
+    #zijbalk-links { border-bottom: 3px solid var(--p); }
+    #zijbalk-agenda { border-top: 3px solid var(--p); }
+    
+    /* Zorg dat de kaart ALTIJD een flink blok ruimte krijgt en horizontaal scrollbaar is */
+    #plattegrond-sectie { padding: 15px 5px; width: 100%; box-sizing: border-box; min-height: 60vh; overflow-x: auto; overflow-y: hidden; }
+    #tuin-container { min-width: 340px; margin: 0 auto; display: block; }
+    #tuin-afbeelding { width: 100%; }
+    
+    /* Kompas netjes in beeld zetten ipv links buiten het scherm */
+    #kompas-container { position: relative; left: auto; top: auto; margin: 0 auto 15px auto; display: block; width: 120px; }
+    
+    /* Zorg dat de invul-popups en kalender op het scherm passen */
+    .modal { width: 95% !important; padding: 15px; max-height: 90vh; }
+    .tooltip { width: 90%; left: 5% !important; top: 10% !important; }
+}@media print{body{height:auto;overflow:visible;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}#top-balk,#zijbalk-links,.modal,.tooltip,#kompas-container,.controls,.touch-drag-avatar{display:none!important}#werkruimte{flex-direction:column;height:auto;display:block;overflow:visible}#plattegrond-sectie{padding:0;background:#fff;display:block;width:100%;overflow:visible;break-after:always}#tuin-container{box-shadow:none;border:1px solid #ccc;width:100%;margin:0}#tuin-afbeelding{max-width:100%}#zijbalk-agenda{width:100%;box-shadow:none;border:none;overflow:visible;flex:none;display:block!important}details.menu-sectie>summary,.search-container{display:none}#agenda-lijst{padding:0;overflow:visible}.agenda-item{border-left-width:3px!important;margin-bottom:15px;break-inside:avoid;border:1px solid #eee}.plant-marker{position:absolute!important}}
 </style>
 </head>
 <body>
