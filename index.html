@@ -246,34 +246,34 @@ async function syncToCloud() {
 async function syncFromCloud() {
     try {
         let tk = gapi.client.getToken().access_token;
-        
-        // FIX: Veilige URL voor het ophalen
         let query = encodeURIComponent("name='tuinplanner_backup.json' and trashed=false");
         
-        let s = await fetch("https://www.googleapis.com/drive/v3/files?q=" + query, { headers: { 'Authorization': 'Bearer ' + tk } }).then(r => r.json());
+        console.log("Zoeken naar backup op Google Drive...");
+        let response = await fetch("https://www.googleapis.com/drive/v3/files?q=" + query, { headers: { 'Authorization': 'Bearer ' + tk } });
+        let s = await response.json();
         
+        console.log("Google Drive antwoord:", s); // <--- HIER ZIEN WE WAT ER MIS IS
+
         if (s.files && s.files.length > 0) {
-            driveFileId = s.files[0].id; localStorage.setItem('tuinDriveFileId', driveFileId);
+            console.log("Bestand gevonden met ID:", s.files[0].id);
+            driveFileId = s.files[0].id; 
+            localStorage.setItem('tuinDriveFileId', driveFileId);
+            
             let d = await fetch("https://www.googleapis.com/drive/v3/files/" + driveFileId + "?alt=media", { headers: { 'Authorization': 'Bearer ' + tk } }).then(r => r.json());
             
             if (d.plants) {
                 plts = d.plants;
                 if (d.bg) { localStorage.setItem('tuinAchtergrondData', d.bg); D.tA.src = d.bg; }
                 localStorage.setItem(KEY, JSON.stringify(plts));
-                ren(); alert("✅ Tuin succesvol ingeladen vanuit Google Drive!");
+                ren(); 
+                alert("✅ Tuin succesvol ingeladen!");
             }
         } else {
-            // FIX: Als de cloud leeg is, check dan of we al planten hadden getekend
-            if (plts && plts.length > 0) {
-                syncToCloud(); // Stuur ze direct naar de cloud!
-                alert("☁️ Er was nog geen backup, dus je huidige planten zijn nu direct veilig in Google Drive gezet!");
-            } else {
-                alert("Geen cloud-backup gevonden. Je huidige tuin is nu je startpunt. Zodra je iets wijzigt wordt het veilig opgeslagen!");
-            }
+            console.log("Geen bestanden gevonden met die naam.");
+            alert("Geen cloud-backup gevonden.");
         }
-        document.getElementById('btn-gdrive').innerText = "☁️ Verbonden";
     } catch(e) {
-        document.getElementById('btn-gdrive').innerText = "☁️ Fout";
+        console.error("Fout bij ophalen:", e);
     }
 }
 // ===================================
