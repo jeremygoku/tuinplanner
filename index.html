@@ -488,5 +488,12 @@ async function lW(){
 document.addEventListener('keydown',e=>{let inI=['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName);if(e.key==='Escape'){D.m.style.display='none';document.getElementById('bloei-modal').style.display='none'}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!inI){e.preventDefault();vU()}if(!inI&&selIds.size>0){let mX=0,mY=0,md=!1;if(e.key==='ArrowUp'){mY=-.5;md=!0}else if(e.key==='ArrowDown'){mY=.5;md=!0}else if(e.key==='ArrowLeft'){mX=-.5;md=!0}else if(e.key==='ArrowRight'){mX=.5;md=!0}if(md){e.preventDefault();sU();selIds.forEach(k=>{let[id,idx]=k.split('-').map(Number),p=plts.find(x=>x.id===id);if(p?.posities?.[idx]){p.posities[idx].x=`${Math.max(0,Math.min(100,parseFloat(p.posities[idx].x)+mX))}%`;p.posities[idx].y=`${Math.max(0,Math.min(100,parseFloat(p.posities[idx].y)+mY))}%`}});sav();ren()}if(e.key==='Enter'||e.key.toLowerCase()==='e'){e.preventDefault();oB(plts.find(p=>p.id===+Array.from(selIds)[0].split('-')[0]))}if(['Delete','Backspace'].includes(e.key)){e.preventDefault();if(confirm(`Verwijder ${selIds.size} marker(s)?`)){sU();let mDel=[...selIds].map(k=>{let[id,idx]=k.split('-').map(Number);return{id,idx}}).sort((a,b)=>b.idx-a.idx);mDel.forEach(({id,idx})=>{let p=plts.find(x=>x.id===id);if(p){p.posities.splice(idx,1);p.count=p.posities.length}});plts=plts.filter(p=>p.posities.length>0);selIds.clear();sav();ren();D.tt.style.display='none'}}}});
 document.addEventListener('mousemove',vB);document.addEventListener('touchmove',vB,{passive:!1});
 document.addEventListener('mouseup',vL);document.addEventListener('touchend',vL);
+// Sluit het weerbericht en de agenda standaard op telefoonschermen
+if (window.innerWidth <= 900) {
+    document.querySelectorAll('details.menu-sectie').forEach((el, index) => {
+        // Index 0 = Catalogus (blijft open). Index 1 en 2 (Weer & Agenda) gaan dicht.
+        if(index !== 0) el.removeAttribute('open');
+    });
+}
 ren();lW();
 </script></body></html>
