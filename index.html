@@ -367,10 +367,10 @@ const sav=()=>{
     clearTimeout(cST);
     cST = setTimeout(()=>{
         if(typeof gapi!=='undefined' && gapi.client && gapi.client.getToken()){
-            document.getElementById('btn-gdrive').innerText="☁️ Opslaan...";
+            document.getElementById('btn-gdrive').innerText="💾";
             syncToCloud().then(()=>{
-                document.getElementById('btn-gdrive').innerText="☁️ Opgeslagen";
-                setTimeout(()=>document.getElementById('btn-gdrive').innerText="☁️ Verbonden",2000);
+                document.getElementById('btn-gdrive').innerText="✅";
+                setTimeout(()=>document.getElementById('btn-gdrive').innerText="☁️";,2000);
             });
         }
     }, 1500);
