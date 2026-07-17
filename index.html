@@ -103,13 +103,11 @@ details.menu-sectie>summary h2{margin:0;font-size:16px;color:var(--p);display:in
     .btn { padding: 6px 12px; font-size: 12px; border-radius: 20px; } 
     .filter-groep select { padding: 5px 10px; font-size: 12px; border-radius: 15px; }
     
-    /* Verberg onnodige desktop knoppen op mobiel */
     #btn-toggle-ui, #btn-print, #btn-export, #btn-import { display: none !important; }
 
     #btn-bloeikalender { font-size: 0 !important; padding: 6px 10px; }
     #btn-bloeikalender::after { content: '🌸'; font-size: 16px; display: block; }
 
-    /* Mobiele knoppen voor Weer en Agenda (verborgen op desktop) */
     #btn-weer-mobile, #btn-agenda-mobile { display: inline-block !important; font-size: 0; padding: 6px 10px; }
     #btn-weer-mobile::after { content: '⛅'; font-size: 16px; }
     #btn-agenda-mobile::after { content: '📋'; font-size: 16px; }
@@ -143,12 +141,11 @@ details.menu-sectie>summary h2{margin:0;font-size:16px;color:var(--p);display:in
 
     #kompas-container { top: 15px !important; left: 15px !important; transform: scale(0.40); transform-origin: top left; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border-radius: 50%; }
 
-    /* Menu's omzetten in "Bottom Sheets" */
     #zijbalk-links, #zijbalk-agenda { 
         position: fixed; bottom: 0; left: 0; width: 100%; border: none; 
         border-radius: 20px 20px 0 0; box-shadow: 0 -5px 25px rgba(0,0,0,0.25); 
         z-index: 10000; max-height: 65vh; background: #fff; 
-        display: none !important; /* Standaard onzichtbaar! */
+        display: none !important; 
         flex-direction: column; padding-bottom: 20px; 
     }
     
@@ -181,14 +178,12 @@ details.menu-sectie>summary h2{margin:0;font-size:16px;color:var(--p);display:in
     <div class="controls">
         <button class="btn btn-secondary" id="btn-gdrive" style="display:none;" onclick="handleAuthClick()">☁️</button>
         
-        <!-- De mobiele Camera en Upload knoppen staan nu direct vooraan! -->
         <button class="btn btn-secondary" id="btn-bg-camera" style="background:#2b6cb0" title="Maak foto met camera">📷</button>
         <input type="file" id="bg-camera-input" accept="image/*" capture="environment" style="display:none">
         
         <button class="btn btn-secondary" id="btn-bg-upload" title="Kies foto uit galerij">🖼️</button>
         <input type="file" id="bg-file-input" accept="image/*" style="display:none">
 
-        <!-- Knoppen voor mobiele Bottom Sheets -->
         <button class="btn btn-secondary" id="btn-weer-mobile" style="display:none;"></button>
         <button class="btn btn-secondary" id="btn-agenda-mobile" style="display:none;"></button>
         
@@ -249,7 +244,30 @@ details.menu-sectie>summary h2{margin:0;font-size:16px;color:var(--p);display:in
     <div class="flex-input"><div><label>Kleur & Aantal</label><div style="display:flex;gap:10px;align-items:center;margin-top:4px"><input type="color" id="p-color" value="#40c057"><input type="number" id="p-count" min="1" value="1"></div></div></div>
     <div class="flex-input" style="margin-top:10px"><div><label id="label-breedte">Grootte (px)</label><input type="range" id="p-size" min="25" max="250" value="40"></div><div id="hoogte-container" style="display:none"><label>Hoogte (px)</label><input type="range" id="p-height" min="25" max="250" value="40"></div></div>
     <label>Notities</label><textarea id="p-info" rows="2"></textarea>
-    <div class="history-section" id="p-history-section"><label>📜 Logboek</label><div class="history-list" id="p-history-list"></div><div id="p-log-dropzone" class="log-dropzone"><div id="p-log-img-preview-container" class="img-preview-container"><img id="p-log-img-preview-src"><button class="btn-remove-img" id="btn-clear-log-img">✖</button></div><div class="flex-input" style="margin-top:4px"><input id="p-new-log" placeholder="Notitie of sleep foto"><button class="btn btn-secondary" id="btn-add-log-img" style="padding:6px">📸</button><input type="file" id="p-new-log-file" accept="image/*" style="display:none"><button class="btn" id="btn-add-log" style="padding:6px 12px">Toevoegen</button></div></div></div>
+    
+    <div class="history-section" id="p-history-section">
+        <label>📜 Logboek</label>
+        <div class="history-list" id="p-history-list"></div>
+        <div id="p-log-dropzone" class="log-dropzone">
+            <div id="p-log-img-preview-container" class="img-preview-container">
+                <img id="p-log-img-preview-src">
+                <button class="btn-remove-img" id="btn-clear-log-img">✖</button>
+            </div>
+            <!-- NIEUW: Logboek knoppen netjes op één rij, inclusief Camera en Galerij -->
+            <div style="display:flex; gap:6px; margin-top:6px; width:100%;">
+                <input id="p-new-log" placeholder="Notitie" style="flex:1; min-width:0;">
+                
+                <button class="btn btn-secondary" id="btn-add-log-camera" style="padding:6px; background:#2b6cb0" title="Maak foto">📷</button>
+                <input type="file" id="p-new-log-camera-file" accept="image/*" capture="environment" style="display:none">
+                
+                <button class="btn btn-secondary" id="btn-add-log-img" style="padding:6px" title="Kies uit galerij">🖼️</button>
+                <input type="file" id="p-new-log-file" accept="image/*" style="display:none">
+                
+                <button class="btn" id="btn-add-log" style="padding:6px 10px">Toevoegen</button>
+            </div>
+        </div>
+    </div>
+    
     <div class="modal-buttons"><button class="btn" id="btn-save">Opslaan</button><button class="btn btn-danger" id="btn-delete" style="display:none">Wissen</button><button class="btn" id="btn-cancel" style="background:#aaa">Annuleren</button></div>
 </div>
 <div id="bloei-modal" class="modal" style="width:650px"><h3 style="margin-bottom:5px">🌸 Bloeikalender</h3><p style="font-size:12px;color:#555;margin-top:0">Wanneer bloeien planten op basis van de ingestelde kleur.</p><div id="bloei-content" style="margin-top:15px;max-height:50vh;overflow-y:auto;overflow-x:hidden;padding-right:5px"></div><div class="modal-buttons" style="margin-top:20px"><button class="btn" id="btn-sluit-bloei">Sluiten</button></div></div>
@@ -434,7 +452,7 @@ const handleBgUpload = e => {
         };
         r.readAsDataURL(f);
     }
-    e.target.value = ''; // Reset, zodat je vaker achter elkaar een foto kan maken
+    e.target.value = ''; 
 };
 
 document.getElementById('bg-file-input').onchange = handleBgUpload;
@@ -480,11 +498,24 @@ function fil(){let q=D.aS.value.toLowerCase().trim();document.querySelectorAll('
 document.getElementById('btn-add').onclick=()=>{eId=null;wTL();document.getElementById('modal-title').innerText="Nieuw";['p-name','p-info'].forEach(id=>document.getElementById(id).value='');document.getElementById('p-type').value='Struik';document.getElementById('p-custom-icon').value='standaard';D.pV.value='cirkel';document.getElementById('p-color').value='#40c057';['p-size','p-height'].forEach(id=>document.getElementById(id).value='40');document.getElementById('p-count').value='1';D.pE.checked=!0;D.pF.checked=!1;D.hS.style.display='none';document.querySelectorAll('.matrix-check').forEach(c=>c.checked=!1);document.getElementById('btn-delete').style.display='none';D.pV.dispatchEvent(new Event('change'));D.m.style.display='block';D.m.scrollTop=0;};
 function oB(p){if(!p)return;eId=p.id;wTL();document.getElementById('modal-title').innerText="Wijzigen";document.getElementById('p-name').value=p.name;document.getElementById('p-type').value=p.type;document.getElementById('p-custom-icon').value=p.customIcon||'standaard';D.pV.value=p.vorm||'cirkel';document.getElementById('p-color').value=p.color;document.getElementById('p-size').value=p.size;document.getElementById('p-height').value=p.height||p.size;document.getElementById('p-count').value=p.count||1;document.getElementById('p-info').value=p.info;D.pE.checked=p.groenblijvend??!0;D.pF.checked=p.vorstGevoelig||!1;D.hS.style.display='block';tLog=p.history?[...p.history]:[];rL();document.querySelectorAll('.matrix-check').forEach(c=>c.checked=p.schema?.[c.dataset.month]?.includes(c.value)||!1);document.getElementById('btn-delete').style.display='block';D.pV.dispatchEvent(new Event('change'));D.m.style.display='block';D.m.scrollTop=0;}
 const rL=()=>{D.hL.innerHTML=tLog.length?tLog.map(i=>`<div class="history-item"><span class="history-date">[${i.date}]</span> ${i.text||''}${i.img?`<img src="${i.img}" class="history-img">`:''}</div>`).join(''):'<i>Geen logboek.</i>'};
+
 const vLF=f=>{let r=new FileReader();r.onload=ev=>{let i=new Image();i.onload=()=>{let c=document.createElement('canvas'),s=Math.min(800/i.width,1);c.width=i.width*s;c.height=i.height*s;c.getContext('2d').drawImage(i,0,0,c.width,c.height);tImg=c.toDataURL('image/jpeg',.7);D.iPS.src=tImg;D.iPC.style.display='inline-block'};i.src=ev.target.result};r.readAsDataURL(f)};
-document.getElementById('btn-add-log-img').onclick=e=>{e.preventDefault();document.getElementById('p-new-log-file').click()};document.getElementById('p-new-log-file').onchange=e=>{if(e.target.files[0])vLF(e.target.files[0])};
+
+// --- LOGBOEK KNOPPEN LOGICA ---
+document.getElementById('btn-add-log-img').onclick = e => { e.preventDefault(); document.getElementById('p-new-log-file').click(); };
+document.getElementById('p-new-log-file').onchange = e => { if (e.target.files[0]) vLF(e.target.files[0]); };
+
+document.getElementById('btn-add-log-camera').onclick = e => { e.preventDefault(); document.getElementById('p-new-log-camera-file').click(); };
+document.getElementById('p-new-log-camera-file').onchange = e => { if (e.target.files[0]) vLF(e.target.files[0]); };
+// ------------------------------
+
 D.nLI.onpaste=e=>{for(let i of(e.clipboardData||e.originalEvent.clipboardData).items)if(i.kind==='file')vLF(i.getAsFile())};
 D.lD.ondragover=e=>{e.preventDefault();D.lD.classList.add('dragover')};D.lD.ondragleave=()=>D.lD.classList.remove('dragover');D.lD.ondrop=e=>{e.preventDefault();D.lD.classList.remove('dragover');if(e.dataTransfer.files[0]?.type.startsWith('image/'))vLF(e.dataTransfer.files[0])};
-document.getElementById('btn-clear-log-img').onclick=e=>{e.preventDefault();wTL()};const wTL=()=>{tImg=null;D.iPC.style.display='none';document.getElementById('p-new-log-file').value=''};
+
+// Reset de input velden als het formulier wordt geleegd
+const wTL=()=>{tImg=null;D.iPC.style.display='none';document.getElementById('p-new-log-file').value='';document.getElementById('p-new-log-camera-file').value='';};
+document.getElementById('btn-clear-log-img').onclick=e=>{e.preventDefault();wTL()};
+
 document.getElementById('btn-add-log').onclick=e=>{e.preventDefault();let t=D.nLI.value.trim();if(t||tImg){tLog.unshift({date:new Date().toLocaleDateString('nl-NL'),text:t,img:tImg});D.nLI.value='';wTL();rL()};sav();};
 document.getElementById('btn-cancel').onclick=()=>D.m.style.display='none';
 document.getElementById('btn-save').onclick=()=>{sU();let nA=Math.max(1,+document.getElementById('p-count').value||1),pD={name:document.getElementById('p-name').value||'Naamloos',type:document.getElementById('p-type').value,customIcon:document.getElementById('p-custom-icon').value,vorm:D.pV.value,color:document.getElementById('p-color').value,size:document.getElementById('p-size').value,height:document.getElementById('p-height').value,count:nA,info:document.getElementById('p-info').value||'',groenblijvend:D.pE.checked,vorstGevoelig:D.pF.checked,schema:Object.fromEntries(mnden.map(m=>[m,[]])),history:tLog};document.querySelectorAll('.matrix-check:checked').forEach(c=>pD.schema[c.dataset.month].push(c.value));if(eId!==null){let bP=plts.find(p=>p.id===eId),hP=bP.posities||[{x:'50%',y:'50%'}];if(nA>hP.length){let bX=parseFloat(hP[0].x),bY=parseFloat(hP[0].y),eN=nA-hP.length;for(let i=0;i<eN;i++){let h=(i/eN)*Math.PI*2;hP.push({x:`${Math.max(0,Math.min(100,bX+Math.cos(h)*5)).toFixed(2)}%`,y:`${Math.max(0,Math.min(100,bY+Math.sin(h)*5)).toFixed(2)}%`})}}else if(nA<hP.length)hP=hP.slice(0,nA);Object.assign(bP,pD);bP.posities=hP}else plts.push({...pD,id:Date.now(),posities:[{x:'50%',y:'50%'}],completedTasks:{}});sav();ds();ren();D.m.style.display='none'};
