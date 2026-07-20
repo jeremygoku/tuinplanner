@@ -35,7 +35,7 @@ async function lW(){
     } catch { D.wL.innerHTML='<p style="color:var(--d);font-size:12px;text-align:center">Weer laden mislukt.</p>'; }
 }
 // ====== AI PLANTEN SCANNER ======
-const PLANTNET_API_KEY = 'VUL_HIER_JE_API_SLEUTEL_IN'; // Dit fixen we in Stap 4
+const PLANTNET_API_KEY = '2b10OlaN608Pjp2KauL6oLaDBe'; // Dit fixen we in Stap 4
 
 async function identifyPlant(base64Img) {
     if (PLANTNET_API_KEY === 'VUL_HIER_JE_API_SLEUTEL_IN') {
