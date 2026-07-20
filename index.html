@@ -76,7 +76,12 @@
     </div>
 </div>
 <div id="plant-modal" class="modal"><h3 id="modal-title">Element toevoegen</h3>
-    <label>Naam</label><input id="p-name" placeholder="bijv. Hortensia">
+<label>Naam</label>
+<div style="display:flex; gap:10px;">
+    <input id="p-name" placeholder="bijv. Hortensia" style="flex:1;">
+    <button id="btn-scan-plant" class="btn" style="background:var(--p); padding:8px 12px; font-size:14px;" title="Scan een plant met je camera">📸 Scan</button>
+    <input type="file" id="scan-camera-input" accept="image/*" capture="environment" style="display:none;">
+</div>
     <label>Categorie</label><select id="p-type"><option value="Boom">🌳 Boom</option><option value="Struik">🌿 Struik</option><option value="Bloem">🌹 Bloem</option><option value="Kruid">🌱 Kruid</option></select>
     <label>Symbool</label><select id="p-custom-icon"><option value="standaard">⚙️ Volg categorie</option><optgroup label="Bomen"><option value="🌳">🌳 Loofboom</option><option value="🌸">🌸 Bloesem</option><option value="🌲">🌲 Naaldboom</option><option value="🌴">🌴 Palm</option><option value="🎋">🎋 Bamboe</option><option value="🪵">🪵 Wilg</option></optgroup><optgroup label="Struiken"><option value="🌿">🌿 Struik</option><option value="☘️">☘️ Klein</option><option value="🍃">🍃 Bladverliezend</option><option value="🌾">🌾 Siergras</option><option value="🪴">🪴 Potplant</option><option value="🌵">🌵 Cactus</option><option value="🍁">🍁 Varen/Herfst</option></optgroup><optgroup label="Bloemen"><option value="🌹">🌹 Roos</option><option value="🌻">🌻 Zonnebloem</option><option value="🌷">🌷 Tulp</option><option value="🌼">🌼 Margriet</option><option value="🌺">🌺 Exoot</option><option value="🪻">🪻 Hyacint</option><option value="🪷">🪷 Lotus</option><option value="💮">💮 Wit</option><option value="🏵️">🏵️ Rozet</option></optgroup><optgroup label="Moestuin"><option value="🌱">🌱 Zaailing</option><option value="🍅">🍅 Tomaat</option><option value="🥕">🥕 Wortel</option><option value="🥬">🥬 Sla</option><option value="🎃">🎃 Pompoen</option><option value="🧅">🧅 Ui</option><option value="🌽">🌽 Maïs</option><option value="🌶️">🌶️ Peper</option><option value="🍆">🍆 Aubergine</option><option value="🥔">🥔 Aardappel</option><option value="🥒">🥒 Komkommer</option><option value="🍓">🍓 Aardbei</option><option value="🍇">🍇 Druif</option><option value="🫐">🫐 Bes</option><option value="🍉">🍉 Meloen</option><option value="🍄">🍄 Paddenstoel</option></optgroup><optgroup label="Tuininrichting"><option value="🏡">🏡 Tuinhuis</option><option value="🪑">🪑 Terras</option><option value="⛲">⛲ Vijver</option><option value="🧱">🧱 Border</option><option value="🛤️">🛤️ Pad</option><option value="⛩️">⛩️ Pergola</option></optgroup></select>
     
