@@ -37,7 +37,7 @@ async function lW(){
 // ====== AI PLANTEN SCANNER ======
 const PLANTNET_API_KEY = '2b10OlaN608Pjp2KauL6oLaDBe'; 
 
-// Nieuwe hulpfunctie: 100% betrouwbaar op mobiel
+// Nieuwe hulpfunctie: 100% betrouwbaar op mobiel en web
 function base64ToBlob(base64) {
     let arr = base64.split(','), mime = arr[0].match(/:(.*?);/)[1];
     let bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
