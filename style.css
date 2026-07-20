@@ -162,3 +162,16 @@ details.menu-sectie>summary h2{margin:0;font-size:16px;color:var(--p);display:in
 }
 
 @media print{body{height:auto;overflow:visible;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}#top-balk,#zijbalk-links,.modal,.tooltip,#kompas-container,.controls,.touch-drag-avatar{display:none!important}#werkruimte{flex-direction:column;height:auto;display:block;overflow:visible}#plattegrond-sectie{padding:0;background:#fff;display:block;width:100%;overflow:visible;break-after:always}#tuin-container{box-shadow:none;border:1px solid #ccc;width:100%;margin:0}#tuin-afbeelding{max-width:100%}#zijbalk-agenda{width:100%;box-shadow:none;border:none;overflow:visible;flex:none;display:block!important}details.menu-sectie>summary,.search-container{display:none}#agenda-lijst{padding:0;overflow:visible}.agenda-item{border-left-width:3px!important;margin-bottom:15px;break-inside:avoid;border:1px solid #eee}.plant-marker{position:absolute!important}}
+/* Fix voor het wispelturige Cloud-logo op mobiel */
+#btn-gdrive {
+    min-width: 40px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    #btn-gdrive {
+        /* Forceer zichtbaarheid als Google geladen is, zelfs als andere knoppen verdwijnen */
+        display: inline-block !important; 
+        order: -1; /* Zet hem altijd vooraan in het rijtje op mobiel */
+    }
+}
