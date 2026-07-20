@@ -122,8 +122,9 @@
 <div id="touch-drag-avatar" class="touch-drag-avatar"></div>
 
 <!-- Link naar je externe JavaScript bestand -->
-<script src="script.js"></script>
-<script>
+<script src="db.js"></script>
+<script src="cloud.js"></script>
+<script src="script.js"></script><script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
