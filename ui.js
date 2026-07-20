@@ -111,3 +111,54 @@ async function initApp() {
     ren(); lW();
 }
 initApp();
+// ====== AI CAMERA INTERACTIE ======
+document.getElementById('btn-scan-plant').onclick = (e) => {
+    e.preventDefault();
+    document.getElementById('scan-camera-input').click();
+};
+
+document.getElementById('scan-camera-input').onchange = (e) => {
+    let f = e.target.files[0];
+    if (f) {
+        let r = new FileReader();
+        r.onload = ev => {
+            let img = new Image();
+            img.onload = async () => {
+                let canvas = document.createElement('canvas');
+                let maxW = 800, maxH = 800; 
+                let width = img.width, height = img.height;
+                
+                if (width > height) { if (width > maxW) { height *= maxW / width; width = maxW; } } 
+                else { if (height > maxH) { width *= maxH / height; height = maxH; } }
+                
+                canvas.width = width; canvas.height = height;
+                canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                
+                let base64 = canvas.toDataURL('image/jpeg', 0.8);
+                
+                // Feedback naar de gebruiker
+                let btn = document.getElementById('btn-scan-plant');
+                let origText = btn.innerText;
+                btn.innerText = "⏳ Zoeken...";
+                btn.disabled = true;
+                document.getElementById('p-name').value = "AI is aan het nadenken...";
+                
+                // Vraag het aan de API
+                let plantName = await identifyPlant(base64);
+                
+                if (plantName && plantName !== "Geen duidelijke match") {
+                    document.getElementById('p-name').value = plantName.charAt(0).toUpperCase() + plantName.slice(1);
+                } else {
+                    document.getElementById('p-name').value = "";
+                    alert(plantName === "Geen duidelijke match" ? "Kan plant niet herkennen. Zorg dat het blad of de bloem scherp in beeld is." : "Fout bij scannen.");
+                }
+                
+                btn.innerText = origText;
+                btn.disabled = false;
+            };
+            img.src = ev.target.result;
+        };
+        r.readAsDataURL(f);
+    }
+    e.target.value = ''; 
+};
