@@ -188,41 +188,7 @@ function sD(e){let m=e.target.closest('.plant-marker');if(m){let id=+m.dataset.i
 function vB(e){if(!slep)return;let cP=gC(e),r=D.c.getBoundingClientRect(),dX=((cP.x-dStart.x)/r.width)*100,dY=((cP.y-dStart.y)/r.height)*100;selIds.forEach(k=>{let[id,idx]=k.split('-').map(Number),p=plts.find(x=>x.id===id),sP=dStartP.get(k);if(p&&sP){p.posities[idx].x=`${Math.max(0,Math.min(100,parseFloat(sP.x)+dX)).toFixed(2)}%`;p.posities[idx].y=`${Math.max(0,Math.min(100,parseFloat(sP.y)+dY)).toFixed(2)}%`;let m=document.querySelector(`.plant-marker[data-id="${id}"][data-index="${idx}"]`);if(m){m.style.left=p.posities[idx].x;m.style.top=p.posities[idx].y}}})}
 const vL=()=>{if(slep){sU();sav();slep=!1}};
 
-async function lW(){
-    try {
-        let r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=51.0343&longitude=3.5483&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_gusts_10m_max&timezone=Europe%2FAmsterdam&models=ecmwf_ifs&past_days=14&forecast_days=14`);
-        if(!r.ok)throw"";
-        let d=await r.json(), dy=d.daily, h='', dD=0;
-        if(!dy?.time)throw"";
-        
-        let pastRain = dy.precipitation_sum.slice(0, 14).reduce((a,b)=>a+(b||0), 0).toFixed(1);
-        let futureRain = dy.precipitation_sum.slice(14, 21).reduce((a,b)=>a+(b||0), 0).toFixed(1);
-        
-        h += `<div style="background:#eaf6ea; padding:12px; border-radius:6px; margin-bottom:15px; font-size:13px; color:var(--gd); border:1px solid var(--a); text-align:center;">
-                <strong style="color:var(--p); display:block; margin-bottom:4px; font-size:14px;">💧 Neerslagbalans Nevele</strong>
-                Afgelopen 14 dagen: <b>${pastRain} mm</b><br>
-                Komende 7 dagen: <b>${futureRain} mm</b>
-              </div>`;
-        
-        for(let i=14; i<Math.min(dy.time.length, 28); i++){
-            let dn=new Date(dy.time[i]).toLocaleDateString('nl-NL',{weekday:'short',day:'numeric',month:'short'}),
-                mx=Math.round(dy.temperature_2m_max[i]||0), mn=Math.round(dy.temperature_2m_min[i]||0),
-                rg=dy.precipitation_sum[i]||0, wn=dy.wind_gusts_10m_max[i]||0,
-                ic=rg>5?'🌧️':rg>.5?'🌦️':mx<5?'❄️':'🌤️';
-            
-            let dW = [];
-            if(mn<0){ dW.push({i:'❄️', t:`Vorst: ${mn}°C`}); fVorst=!0; }
-            if(rg>15){ dW.push({i:'🌧️', t:`Zware regen: ${rg}mm`}); }
-            if(wn>45){ dW.push({i:'💨', t:`Harde wind: ${wn}km/h`}); }
-            dD = rg<.5 ? dD+1 : 0;
-            if(dD>=4){ dW.push({i:'⚠️', t:`Gevaar voor droogte`}); fDroog=!0; }
-            
-            let iH = dW.map(w => `<span class="dag-waarschuwing" title="${w.t}">${w.i}</span>`).join('');
-            h+=`<div class="weer-dag"><span class="weer-dag-datum">${ic} ${dn}</span><div class="weer-dag-rechts"><div class="weer-dag-icons">${iH}</div><span class="weer-dag-temp">${mx}° / ${mn}°</span></div></div>`;
-        }
-        D.wL.innerHTML = h; D.wW.style.display = 'none'; ren();
-    } catch { D.wL.innerHTML='<p style="color:var(--d);font-size:12px;text-align:center">Weer laden mislukt.</p>'; }
-}
+
 
 document.addEventListener('keydown',e=>{let inI=['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName);if(e.key==='Escape'){D.m.style.display='none';document.getElementById('bloei-modal').style.display='none'}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!inI){e.preventDefault();vU()}if(!inI&&selIds.size>0){let mX=0,mY=0,md=!1;if(e.key==='ArrowUp'){mY=-.5;md=!0}else if(e.key==='ArrowDown'){mY=.5;md=!0}else if(e.key==='ArrowLeft'){mX=-.5;md=!0}else if(e.key==='ArrowRight'){mX=.5;md=!0}if(md){e.preventDefault();sU();selIds.forEach(k=>{let[id,idx]=k.split('-').map(Number),p=plts.find(x=>x.id===id);if(p?.posities?.[idx]){p.posities[idx].x=`${Math.max(0,Math.min(100,parseFloat(p.posities[idx].x)+mX))}%`;p.posities[idx].y=`${Math.max(0,Math.min(100,parseFloat(p.posities[idx].y)+mY))}%`}});sav();ren()}if(e.key==='Enter'||e.key.toLowerCase()==='e'){e.preventDefault();oB(plts.find(p=>p.id===+Array.from(selIds)[0].split('-')[0]))}if(['Delete','Backspace'].includes(e.key)){e.preventDefault();if(confirm(`Verwijder ${selIds.size} marker(s)?`)){sU();let mDel=[...selIds].map(k=>{let[id,idx]=k.split('-').map(Number);return{id,idx}}).sort((a,b)=>b.idx-a.idx);mDel.forEach(({id,idx})=>{let p=plts.find(x=>x.id===id);if(p){p.posities.splice(idx,1);p.count=p.posities.length}});plts=plts.filter(p=>p.posities.length>0);selIds.clear();sav();ren();D.tt.style.display='none'}}}});
 document.addEventListener('mousemove',vB);document.addEventListener('touchmove',vB,{passive:!1});
