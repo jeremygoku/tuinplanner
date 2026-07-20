@@ -34,3 +34,48 @@ async function lW(){
         D.wL.innerHTML = h; D.wW.style.display = 'none'; ren();
     } catch { D.wL.innerHTML='<p style="color:var(--d);font-size:12px;text-align:center">Weer laden mislukt.</p>'; }
 }
+// ====== AI PLANTEN SCANNER ======
+const PLANTNET_API_KEY = 'VUL_HIER_JE_API_SLEUTEL_IN'; // Dit fixen we in Stap 4
+
+async function identifyPlant(base64Img) {
+    if (PLANTNET_API_KEY === 'VUL_HIER_JE_API_SLEUTEL_IN') {
+        alert("Je moet nog even een gratis PlantNet API sleutel aanmaken en invullen in api.js!");
+        return null;
+    }
+    
+    try {
+        // We zetten je Base64 foto om naar een werkbaar bestand (Blob) voor de AI
+        let res = await fetch(base64Img);
+        let blob = await res.blob();
+        
+        let formData = new FormData();
+        formData.append('images', blob, 'plant.jpg');
+        formData.append('organs', 'auto'); // Laat de AI zelf bepalen of je een bloem of blad scant
+        
+        // Stuur naar de Franse Pl@ntNet servers (we vragen specifiek om de Nederlandse naam)
+        let response = await fetch(`https://my-api.plantnet.org/v2/identify/all?api-key=${PLANTNET_API_KEY}&lang=nl`, {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) throw new Error("Scannen mislukt");
+        
+        let data = await response.json();
+        
+        // Is de AI zeker genoeg? (Score boven de 10%)
+        if (data.results && data.results.length > 0 && data.results[0].score > 0.1) {
+            let commonNames = data.results[0].species.commonNames;
+            // Als er een Nederlandse naam is, pak die. Anders de wetenschappelijke naam.
+            if (commonNames && commonNames.length > 0) {
+                return commonNames[0]; 
+            } else {
+                return data.results[0].species.scientificNameWithoutAuthor;
+            }
+        } else {
+            return "Geen duidelijke match";
+        }
+    } catch (e) {
+        console.error("Scan fout:", e);
+        return null;
+    }
+}
