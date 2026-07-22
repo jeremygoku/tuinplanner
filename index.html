@@ -10,8 +10,7 @@
   <meta name="theme-color" content="#40c057">
   <link rel="apple-touch-icon" href="./icon-192.png">
     <!-- Google API scripts -->
-    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
-    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+
 </head>
 <body>
 <div id="top-balk">
@@ -130,6 +129,10 @@
 <script src="api.js"></script>
 <script src="app.js"></script>
 <script src="ui.js"></script>
+
+<script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+<script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+
 <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
