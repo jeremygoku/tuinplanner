@@ -1,9 +1,13 @@
-const CACHE_NAME = 'tuinplanner-v6';
+const CACHE_NAME = 'tuinplanner-v7'; // We gaan direct door naar v7
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './style.css',
-  './script.js',
+  './db.js',
+  './cloud.js',
+  './api.js',
+  './app.js',
+  './ui.js',
   './manifest.json',
   './icon-192.png',
   './icon-512.png'
