@@ -35,7 +35,7 @@ async function lW(){
     } catch { D.wL.innerHTML='<p style="color:var(--d);font-size:12px;text-align:center">Weer laden mislukt.</p>'; }
 }
 // ====== AI PLANTEN SCANNER ======
-const PLANTNET_API_KEY = '2b10OlaN608Pjp2KauL6oLaDBe'; 
+const PLANTNET_API_KEY = '2b10zisxiNyNg8vHxuQZihMrM'; 
 
 // Nieuwe hulpfunctie: 100% betrouwbaar op mobiel en web
 function base64ToBlob(base64) {
